@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.iima.campuswifi" android:installLocation="auto" android:versionCode="20130701" android:versionName="1.3">
+      package="org.iima.campuswifi" android:installLocation="auto" android:versionCode="20130917" android:versionName="1.4">
 
 <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
