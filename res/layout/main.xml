@@ -43,7 +43,8 @@
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
             android:layout_marginTop="10px"
-            android:gravity="center" >
+            android:gravity="center"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/textView1"
@@ -67,8 +68,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20px"
-            android:layout_marginRight="20px" 
-            android:gravity="center">
+            android:layout_marginRight="20px"
+            android:gravity="center"
+            android:paddingTop="20dp" >
 
             <TextView
                 android:id="@+id/textView2"
@@ -120,15 +122,24 @@
             android:id="@+id/tableRow6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px" >
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal|right" >
             
             <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/togglepwdchkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="togglePwd"
+                android:layout_marginRight="35dp"
+                android:text="Show Password" />
                     
         </TableRow>
 
@@ -173,6 +184,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="10sp" />
 
@@ -180,8 +192,11 @@
             android:id="@+id/advConfigToggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:onClick="toggleAdvConfig"
-            android:text="Advanced Config" />
+            android:text="Advanced Config"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/aceList"

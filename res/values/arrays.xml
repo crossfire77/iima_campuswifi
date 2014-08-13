@@ -76,10 +76,13 @@
 		<item>2484</item>
 	</string-array>
 	<string-array name="iimaAPs">
+   		<item >wifimobile</item>
+   		<!-- 
 		<item >wifistudent</item>
 		<item >wififaculty</item>
 		<item >wifistaff</item>
 		<item >wifiguest</item>
+		 -->
 	</string-array>
 
 </resources>

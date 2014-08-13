@@ -21,6 +21,7 @@
  * v1.0 - 20121127 - initial release
  * v1.1 - 20121226 - updated checking for username/password fields, incorporated checking android OS version, fixed crash on exit on JellyBean devices
  * v1.2 - 20130413 - market release
+ * v1.3 - 20130701 - setting up new wifimobile access point
  */
 
 package org.iima.campuswifi;
@@ -48,10 +49,9 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -59,6 +59,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class WiFiACEList extends Activity implements
@@ -198,8 +199,7 @@ public class WiFiACEList extends Activity implements
 		// Reflection magic needs to be done here to access non-public
 		// APIs
 		// Also here new ad-hoc switch for CM6 users
-		// FIXME Make me pretty, as now I'm ugly
-
+		
 		try {
 			// Let the magic start
 			Class[] wcClasses = WifiConfiguration.class.getClasses();
@@ -481,6 +481,21 @@ public class WiFiACEList extends Activity implements
 		}
 		aceAdapter.notifyDataSetChanged();
 	}
+	
+	private void clearWifiConfigs() {
+		Log.i(getPackageName(),"clearing WifiConfigs");
+
+		List<WifiConfiguration> configs = wifiManager.getConfiguredNetworks();
+		int cnt=0;
+		for (WifiConfiguration config : configs) {
+			cnt=cnt+1;
+			if (config.SSID == "wifimobile") {
+				Toast.makeText(getBaseContext(), "removing wifimobile", Toast.LENGTH_LONG).show();
+				wifiManager.removeNetwork(cnt);
+			}
+		}
+
+	}
 
 	private void checkWifiState() {
 		boolean enabled = wifiManager.isWifiEnabled();
@@ -559,8 +574,49 @@ public class WiFiACEList extends Activity implements
 		
 	    WifiConfiguration newConfig = new WifiConfiguration(); 
 		
-		//newConfig.SSID = surroundWithQuotes("wifitest");//slidingTemp);
-	    newConfig.SSID = surroundWithQuotes(wifiap);
+		newConfig.SSID = surroundWithQuotes("wifimobile");
+	    // for AP selection
+		// newConfig.SSID = surroundWithQuotes(wifiap);
+		newConfig.hiddenSSID = true;
+			
+		// key management
+		newConfig.allowedKeyManagement.clear();
+		newConfig.allowedKeyManagement
+					.set(WifiConfiguration.KeyMgmt.IEEE8021X);
+		newConfig.allowedKeyManagement
+					.set(WifiConfiguration.KeyMgmt.WPA_EAP);
+				
+		// Authentication Algorithms
+		newConfig.allowedAuthAlgorithms.clear();
+		
+		// GroupCiphers
+		newConfig.allowedGroupCiphers.clear();
+		newConfig.allowedGroupCiphers
+					.set(WifiConfiguration.GroupCipher.WEP40);
+		newConfig.allowedGroupCiphers
+					.set(WifiConfiguration.GroupCipher.WEP104);
+		newConfig.allowedGroupCiphers
+					.set(WifiConfiguration.GroupCipher.CCMP);
+		newConfig.allowedGroupCiphers
+					.set(WifiConfiguration.GroupCipher.TKIP);
+		
+		// PairwiseCiphers
+		newConfig.allowedPairwiseCiphers.clear();
+		newConfig.allowedPairwiseCiphers
+					.set(WifiConfiguration.PairwiseCipher.TKIP);
+		newConfig.allowedPairwiseCiphers
+					.set(WifiConfiguration.PairwiseCipher.CCMP);
+		
+		// Protocols
+		newConfig.allowedProtocols.clear();
+		newConfig.allowedProtocols
+					.set(WifiConfiguration.Protocol.RSN);
+		newConfig.allowedProtocols
+					.set(WifiConfiguration.Protocol.WPA);
+
+		/*
+		// for AP selection
+		newConfig.SSID = surroundWithQuotes(wifiap);
 		newConfig.hiddenSSID = true;
 			
 		// key management
@@ -604,11 +660,11 @@ public class WiFiACEList extends Activity implements
 					.set(WifiConfiguration.Protocol.RSN);
 		newConfig.allowedProtocols
 					.set(WifiConfiguration.Protocol.WPA);
-
-		// Enterprise Settings
+		 */
+		
+		// Enterprise configuration
 		// Reflection magic here too, need access to non-public APIs
 		// Used also to access CM6 adhoc support
-		// FIXME Make me pretty, as I'm uglier than ever before.
 
 		try {
 			// Let the magic start
@@ -714,8 +770,14 @@ public class WiFiACEList extends Activity implements
 		wifiManager.setWifiEnabled(true);
 		
 		
+		try {
+			showExitBox();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Log.i(getPackageName(),"Core: DONE! quitting application");
-		WiFiACEList.this.finish();
+
+		//WiFiACEList.this.finish();
 		
 		}
 		
@@ -1162,6 +1224,50 @@ public class WiFiACEList extends Activity implements
 		builder.show();
 	}
 	
+	public void showExitBox() throws Exception  {
+		
+		Builder builder = new AlertDialog.Builder(this);
+		
+		Log.i(getPackageName(),"Splash: displayed");
+		
+    	PackageInfo pi = null;
+    	try{
+    	pi = getPackageManager().getPackageInfo(getClass().getPackage().getName(), 0);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		}
+    	builder.setTitle("Done!");
+    	builder.setMessage("These settings are saved! \nDevice should now connect to the new network.\nThis app will now close. ");
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	                //Activity transfer to wifi settings
+	               Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+	               startActivity(intent);
+	        	   WiFiACEList.this.finish();
+	           }
+	       });
+		builder.show();
+	}
+	
+	public void togglePwd(View view) throws Exception  {
+
+		TextView passwordView = (TextView)findViewById(R.id.password);
+		CheckBox passwordToggle = (CheckBox)findViewById(R.id.togglepwdchkbox);
+			
+		//Context context = getApplicationContext();
+	
+		if (passwordToggle.isChecked()==true) {
+			//Toast.makeText(context, "IF", Toast.LENGTH_SHORT).show();
+			passwordView.setTransformationMethod(null);
+			Log.i(getPackageName(),"ShowPwd: Enabled");
+		} else {
+			//Toast.makeText(context, "ELSE", Toast.LENGTH_SHORT).show();
+			passwordView.setTransformationMethod(new PasswordTransformationMethod());
+			Log.i(getPackageName(),"ShowPwd: Disabled");
+		}
+
+	}
+	
 	public void checkSDKVersion() {
 		
 		String sdk_var = android.os.Build.VERSION.SDK;
@@ -1183,10 +1289,13 @@ public class WiFiACEList extends Activity implements
 	    		e.printStackTrace();
 	    		}
 	    	builder.setTitle("Incompatible Android Version");
-	    	builder.setMessage("This app is not compatiable with the Android version ("+ androidOS + ") detected on this device.\n\nThe app will function only on devices with Android version 4.0.3 (ICS) and above!");
+	    	builder.setMessage("This app is not compatiable with the Android version ("+ 
+	    				androidOS + ") detected on this device.\n\n" +
+	    				"The app will function only on devices with Android version 4.0.3 (ICS) and above! \n\n" +
+	    				"For older android version visit: http://stdwww.iimahd.ernet.in/ccc/devicesetting.php ");
 			builder.setPositiveButton(getString(android.R.string.ok),  new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) {    
-	        		WiFiACEList.this.finish();
+	            	WiFiACEList.this.finish();
 	            } 
 	          });
 			builder.show();
