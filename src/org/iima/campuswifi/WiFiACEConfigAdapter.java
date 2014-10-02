@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.iima.campuswifi;
+package org.cept.campuswifi;
 
 import java.util.List;
 
