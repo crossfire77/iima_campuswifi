@@ -1,6 +1,7 @@
 /* Copyright 2010 OddRain
  * Copyright 2010 marcus905 <marcus90@gmail.com>
  * Copyright 2012 Rahul Yashwant Doiphode <a12rahuld@iimahd.ernet.in>
+ * Copyright 2014 Ketan J Solanki <ketankumar.solanki.bd14@cept.ac.in>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,15 +19,10 @@
 /* Changelog:
  * ----------
  * 
- * v1.0 - 20121127 - initial release
- * v1.1 - 20121226 - updated checking for username/password fields, incorporated checking android OS version, fixed crash on exit on JellyBean devices
- * v1.2 - 20130413 - market release
- * v1.3 - 20130701 - setting up new wifimobile access point
- * v1.4 - 20130917 - setting up new wifistudent access point
- * 
+ * v1.0 - 20141003 - initial release
  */
 
-package org.iima.campuswifi;
+package org.cept.campuswifi;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -91,7 +87,7 @@ public class WiFiACEList extends Activity implements
     	String ExtWarnErr = "";
 		
     	this.ExtWarningDialog("WARNING!", "\nOpen WiFi settings and remove any saved access points like: "
-    			+ "wifimobile, wifistudent, wifistaff, wififaculty, wifiguest."
+    			+ "CEPT_STUDENT, CEPT_FACULTY, CEPT_GUEST."
     			+ "To remove these access points: LONG press on the name of the saved access point and click 'Forget Network'"
 				+ "\n\n" + "Click OK to continue"
 				+ "\n" + "Click CANCEL to close application");
@@ -1251,8 +1247,8 @@ public class WiFiACEList extends Activity implements
     	builder.setTitle("Help");
     	builder.setMessage("This app is designed for Android OS version 4.0.3 (Ice Cream Sandwich) and above." +
     			"\n\nBefore you begin, remove any saved access points." +
-    			"\n\nSteps to Setup: \n1) Select the access point to setup \n2) Enter the IIM-A username (without the @iimahd.ernet.in part) \n3) Enter your WiFi password \n4) Click on SAVE \n" +
-    			"\n\n\nTroubleshooting: \n1) If you do not remember your password, please contact CCC. \n2) If you are getting \"Disconnected\" prompt try disabling and then re-enabling WiFi. \n3) If the device is still not able to connect, recheck the password, delete the access point (\"Forget Network\") from the Wifi Setting menu, restart app and do the setup again.");
+    			"\n\nSteps to Setup: \n1) Select the access point to setup \n2) Enter the CEPT ID \n3) Enter your WiFi password \n4) Click on SAVE \n" +
+    			"\n\n\nTroubleshooting: \n1) If you do not remember your password, please contact SSO. \n2) If you are getting \"Disconnected\" prompt try disabling and then re-enabling WiFi. \n3) If the device is still not able to connect, recheck the password, delete the access point (\"Forget Network\") from the Wifi Setting menu, restart app and do the setup again.");
 		builder.setPositiveButton(getString(android.R.string.ok), null);
 		builder.show();
 	}
@@ -1344,8 +1340,7 @@ public class WiFiACEList extends Activity implements
 	    	builder.setTitle("Incompatible Android Version");
 	    	builder.setMessage("This app is not compatiable with the Android version ("+ 
 	    				androidOS + ") detected on this device.\n\n" +
-	    				"The app will function only on devices with Android version 4.0.3 (ICS) and above! \n\n" +
-	    				"For older android version visit: http://stdwww.iimahd.ernet.in/ccc/devicesetting.php ");
+	    				"The app will function only on devices with Android version 4.0.3 (ICS) and above! \n\n");
 			builder.setPositiveButton(getString(android.R.string.ok),  new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) {    
 	            	WiFiACEList.this.finish();
