@@ -75,13 +75,12 @@
 		<item>2472</item>
 		<item>2484</item>
 	</string-array>
-	<string-array name="iimaAPs">
+	<string-array name="CEPTAPs">
    		<item >wifimobile</item>
    		<!-- 
-		<item >wifistudent</item>
-		<item >wififaculty</item>
-		<item >wifistaff</item>
-		<item >wifiguest</item>
+		<item >CEPT_STUDENT</item>
+		<item >CEPT_FACULTY</item>
+		<item >CEPT_GUEST</item>
 		 -->
 	</string-array>
 
