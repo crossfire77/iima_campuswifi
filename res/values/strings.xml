@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="app_name">IIM-A WiFi Setup</string>
+    <string name="app_name">CEPT WiFi Setup</string>
     <string name="TITLE_PREFS">Network Configurations</string>
     <string name="TITLE_CONFIG">Configuration</string>
     <string name="TITLE_KEYMGT">Key Management</string>
@@ -50,7 +50,7 @@
     <string name="NA">N/A</string>
     <string name="BSSID">BSSID</string>
     <string name="ABOUT_TITLE">About</string>
-    <string name="ABOUT_CONTENT">created by\nRahul Yashwant Doiphode\nPGP-ABM 2012-2014\na12rahuld@iimahd.ernet.in \n\n\nbased on WiFi Advanced Configuration Editor\nUses codes by Marcus905, OddRain</string>
+    <string name="ABOUT_CONTENT">created by\nKetan J Solanki\nSID 2014\nketankumar.solanki.bd14@cept.ac.in \n\n\nbased on WiFi Advanced Configuration Editor\nUses codes by Marcus905, OddRain</string>
     <string name="ADHOC">Adhoc (only for CM6)</string>
     <string name="ADHOC_FREQUENCY">Adhoc Channel Frequency</string>
     <string name="TITLE_ADHOC">Adhoc Configuration</string>
